@@ -12,6 +12,7 @@ using TodoApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
+using System.Reflection;
 
 namespace TodoApi
 {
@@ -34,15 +35,17 @@ namespace TodoApi
 		// using Microsoft.EntityFrameworkCore;
 		public void ConfigureServices(IServiceCollection services)
 		{
-			//commented out because in Swagger tutorial this line of code doesn't exist
-			//services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase());
-			// Add framework services.
-			services.AddMvc();
+            //commented out because in Swagger tutorial this line of code doesn't exist
+            services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+            // Add framework services.
+            services.AddMvc();
 
 			services.AddLogging();
 
 			// Some parts of the tutorial have AddSingleton while others have AddScoped? Arguement in comments also AddTransient?
 			services.AddSingleton<ITodoRepository, TodoRepository>();
+
+			services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase()).AddSingleton<TodoContext, TodoContext>();
 
 			// Register the Swagger generator, defining one or more Swagger documents
 			services.AddSwaggerGen(c =>
@@ -85,7 +88,10 @@ namespace TodoApi
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+				//c.Asset("index", Assembly.GetEntryAssembly(), "YourWebApiProject.SwaggerExtensions.index.html");
 			});
+
+            app.UseMvc();
 		}
     }
 }

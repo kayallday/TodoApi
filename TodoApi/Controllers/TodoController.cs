@@ -50,9 +50,9 @@ namespace TodoApi.Controllers
 		/// </remarks>
 		/// <param name="item"></param>
 		/// <returns>New Created Todo Item</returns>
-		/// <response code="201">Rturns the newly created item</response>
+		/// <response code="201">Returns the newly created item</response>
 		/// <response code="400">If the item is null</response>
-
+		
 		[HttpPost]
 		[ProducesResponseType(typeof(TodoItem), 201)]
 		[ProducesResponseType(typeof(TodoItem), 400)]
@@ -67,7 +67,7 @@ namespace TodoApi.Controllers
 
 			return CreatedAtRoute("GetTodo", new { id = item.Key }, item);
 		}
-
+		
 		[HttpPut("{id}")]
 		public IActionResult Update(long id, [FromBody] TodoItem item)
 		{
